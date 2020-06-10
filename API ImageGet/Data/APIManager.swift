@@ -9,12 +9,18 @@
 import Foundation
 import UIKit
 
+protocol APIManagerDelegate: AnyObject {
+    func didReceive(data: [DataModel])
+}
+
 class APIManager {
     
     static var sharedInstance = APIManager()
     
     var arrName = [Result]()
     var arrData = [DataModel]()
+    
+    weak var delegate: APIManagerDelegate?
     
     func getData() {
         let url = URL(string: UrlStrings.dataEndPoints)
@@ -44,7 +50,7 @@ class APIManager {
             DispatchQueue.main.async {
                 let showData = DataModel(image: img!, name: name)
                 self.arrData.append(showData)
-                //self.tableView.reloadData()
+                self.delegate?.didReceive(data: self.arrData)
             }
         }
     }

@@ -13,12 +13,12 @@ class CategoryListViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
     
-     var arrData = [DataModel]()
-
+    var arrData = [DataModel]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        APIManager.sharedInstance.delegate = self
         APIManager.sharedInstance.getData()
-        self.tableView.reloadData()
     }
 }
 
@@ -39,4 +39,13 @@ extension CategoryListViewController: UITableViewDataSource,UITableViewDelegate 
         return 125
         
     }
+}
+
+extension CategoryListViewController: APIManagerDelegate {
+    func didReceive(data: [DataModel]) {
+        self.arrData = data
+        self.tableView.reloadData()
+    }
+    
+    
 }
