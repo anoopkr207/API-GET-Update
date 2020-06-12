@@ -1,0 +1,6 @@
+framework module Pods_API_ImageGetTests {
+  umbrella header "Pods-API ImageGetTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

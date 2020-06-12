@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class CategoryListViewController: UIViewController {
-    
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -17,6 +17,13 @@ class CategoryListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let Indicator = MBProgressHUD.showAdded(to: self.view, animated: true)
+        Indicator.label.text = "Loading..."
+        Indicator.detailsLabel.text = "fetching details"
+        Indicator.bezelView.color = UIColor.black
+        Indicator.bezelView.style = .solidColor
+        Indicator.contentColor = UIColor.white
+        Indicator.show(animated: true)
         APIManager.sharedInstance.delegate = self
         APIManager.sharedInstance.getData()
     }
@@ -41,11 +48,13 @@ extension CategoryListViewController: UITableViewDataSource,UITableViewDelegate 
     }
 }
 
+//MARK: Extension
 extension CategoryListViewController: APIManagerDelegate {
     func didReceive(data: [DataModel]) {
-        self.arrData = data
-        self.tableView.reloadData()
+        DispatchQueue.main.async {
+            self.arrData = data
+            MBProgressHUD.hide(for: self.view, animated: true)
+            self.tableView.reloadData()
+        }
     }
-    
-    
 }
